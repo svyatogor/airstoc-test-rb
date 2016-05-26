@@ -5,6 +5,10 @@ class VideosController < ApplicationController
   def index
     if @category
       @videos = @category.videos
+    elsif params[:categories]
+      categories = params[:categories].split('/').map {|s| ActiveRecord::Base.connection.quote(s)}
+      categories_str = categories.join(",")
+      @videos = Video.joins("INNER JOIN (select video_id from categories_videos join categories on categories_videos.category_id = categories.id where slug in (#{categories_str}) group by video_id having count(category_id) = #{categories.length}) vc ON vc.video_id = videos.id").all
     else
       @videos = Video.all
     end

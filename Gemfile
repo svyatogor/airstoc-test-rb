@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.5.1'
 gem 'rake', "~> 11.1"
 gem 'rack-cors', :require => 'rack/cors'
+gem 'friendly_id'
 gem 'rails-api'
 gem 'spring', :group => :development
 gem 'postgresql'

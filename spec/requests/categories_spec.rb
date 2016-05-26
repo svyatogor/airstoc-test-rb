@@ -15,13 +15,14 @@ RSpec.describe "Categories", type: :request do
     end
   end
 
-  describe "GET /categories/ID/videos" do
+  describe "GET /categories/*categories/videos" do
     it "filters by category" do
       cat1 = FactoryGirl.create :category, name: 'cat1'
-      FactoryGirl.create :video, title: 'Video1', location: "London", categories: [cat1]
-      FactoryGirl.create :video, title: 'Video2', location: "Birmingham"
+      cat2 = FactoryGirl.create :category, name: 'cat2'
+      FactoryGirl.create :video, title: 'Video1', location: "London", categories: [cat1, cat2]
+      FactoryGirl.create :video, title: 'Video2', location: "Birmingham", categories: [cat1]
 
-      get "/api/categories/#{cat1.id}/videos"
+      get "/api/categories/#{cat1.slug}/#{cat2.slug}/videos"
       data = JSON.parse(response.body)
       expect(response).to have_http_status(200)
       expect(data['videos'].length).to eq(1)
